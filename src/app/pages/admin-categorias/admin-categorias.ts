@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { Auth } from '../../services/auth';
@@ -37,29 +37,38 @@ export class AdminCategorias implements OnInit {
   constructor(
     private http: HttpClient,
     private auth: Auth,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
     this.listarCategorias();
   }
 
-  listarCategorias(): void {
-    this.cargando = true;
-    this.error = '';
 
-    this.http.get<Categoria[]>(this.apiUrl).subscribe({
-      next: (datos) => {
-        this.categorias = datos;
-        this.cargando = false;
-      },
-      error: (err) => {
-        console.error('Error al cargar categorías:', err);
-        this.error = 'No fue posible cargar las categorías.';
-        this.cargando = false;
-      }
-    });
-  }
+listarCategorias(): void {
+  this.cargando = true;
+  this.error = '';
+
+  console.log('Consultando categorías:', this.apiUrl);
+
+  this.http.get<Categoria[]>(this.apiUrl).subscribe({
+    next: (datos) => {
+      console.log('Categorías recibidas en Angular:', datos);
+
+      this.categorias = datos;
+      this.cargando = false;
+
+      this.cdr.detectChanges();
+    },
+    error: (err) => {
+      console.error('Error al cargar categorías:', err);
+      this.error = `No fue posible cargar las categorías. Código HTTP: ${err.status}`;
+      this.cargando = false;
+    }
+  });
+}
+
 
   guardarCategoria(): void {
     this.error = '';
@@ -105,6 +114,9 @@ export class AdminCategorias implements OnInit {
 
         this.limpiarFormulario();
         this.guardando = false;
+
+        this.cdr.detectChanges();
+
         this.listarCategorias();
       },
       error: (err) => {

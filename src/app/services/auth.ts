@@ -1,5 +1,6 @@
+import { Injectable, inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 
@@ -28,6 +29,7 @@ export interface AuthResponse {
   providedIn: 'root'
 })
 export class Auth {
+  private readonly platformId = inject(PLATFORM_ID);
   private readonly apiUrl = 'http://localhost:8080/api/auth';
   private readonly usuariosUrl = 'http://localhost:8080/api/usuarios';
 
@@ -39,8 +41,10 @@ export class Auth {
       datos
     ).pipe(
       tap(respuesta => {
-        localStorage.setItem('token', respuesta.token);
-        localStorage.setItem('usuario', JSON.stringify(respuesta));
+        if (isPlatformBrowser(this.platformId)) {
+          localStorage.setItem('token', respuesta.token);
+          localStorage.setItem('usuario', JSON.stringify(respuesta));
+        }
       })
     );
   }
@@ -52,11 +56,20 @@ export class Auth {
     );
   }
 
+
   obtenerToken(): string | null {
+    if (!isPlatformBrowser(this.platformId)) {
+      return null;
+    }
+
     return localStorage.getItem('token');
   }
 
   obtenerUsuario(): AuthResponse | null {
+    if (!isPlatformBrowser(this.platformId)) {
+      return null;
+    }
+
     const usuario = localStorage.getItem('usuario');
 
     if (!usuario) {
@@ -72,6 +85,10 @@ export class Auth {
   }
 
   cerrarSesion(): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+
     localStorage.removeItem('token');
     localStorage.removeItem('usuario');
   }
@@ -87,4 +104,5 @@ export class Auth {
   esUsuario(): boolean {
     return this.obtenerUsuario()?.rolId === 2;
   }
+
 }
