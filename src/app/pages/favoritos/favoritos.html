@@ -1,26 +1,39 @@
-<header class="favorites-header">
-  <a routerLink="/catalogo" class="brand">
-    <i class="bi bi-grid-1x2-fill"></i>
-    TecnoCatalog
-  </a>
+<header class="tc-header">
+  <div class="container-fluid px-3 px-lg-5">
+    <nav class="navbar navbar-expand-lg py-3">
+      <a routerLink="/catalogo" class="navbar-brand tc-brand">
+        <span class="brand-icon">
+          <i class="bi bi-box-seam"></i>
+        </span>
+        <span>Tecno<span class="brand-highlight">Catalog</span></span>
+      </a>
 
-  <nav class="favorites-nav">
-    <a routerLink="/catalogo">Catálogo</a>
-    <a routerLink="/favoritos" class="active">Mis favoritos</a>
-  </nav>
+      <div class="d-flex align-items-center gap-3 ms-auto">
+        <a routerLink="/catalogo" class="header-link d-none d-md-inline">
+          Catálogo
+        </a>
 
-    <a href="#" class="header-icon" aria-label="Mi cuenta">
-        <i class="bi bi-person-circle"></i>
-    </a>
-  <div class="user-actions">
-    @if (auth.obtenerUsuario(); as usuario) {
-      <span class="user-name">{{ usuario.nombre }}</span>
-    }
+        <a routerLink="/favoritos" class="header-link d-none d-md-inline active" aria-current="page">
+          Mis favoritos
+        </a>
 
-    <button type="button" class="btn btn-tc-primary btn-sm px-3" (click)="cerrarSesion()" >
-      <i class="bi bi-box-arrow-right"></i>
-      Cerrar sesión
-    </button>
+        <a routerLink="/favoritos" class="header-icon active" aria-label="Favoritos" aria-current="page">
+          <i class="bi bi-heart-fill"></i>
+        </a>
+
+        <a href="#" class="header-icon" aria-label="Mi cuenta">
+          <i class="bi bi-person-circle"></i>
+        </a>
+
+        @if (auth.obtenerUsuario(); as usuario) {
+          <span class="user-name">Hola, {{ usuario.nombre }}</span>
+        }
+
+        <button type="button" (click)="cerrarSesion()" class="btn btn-tc-primary btn-sm px-3">
+          Cerrar sesión
+        </button>
+      </div>
+    </nav>
   </div>
 </header>
 
