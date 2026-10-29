@@ -572,3 +572,44 @@
     flex-shrink: 0;
   }
 }
+.favorite-button {
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.favorite-button:hover {
+  transform: scale(1.08);
+}
+
+.favorite-button.is-favorite {
+  color: #065748;
+  background-color: #e1f8f0;
+}
+
+.favorite-button.is-favorite i {
+  animation: heart-pop 0.25s ease;
+}
+
+@keyframes heart-pop {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.35);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .favorite-button,
+  .favorite-button.is-favorite i {
+    animation: none;
+    transition: none;
+  }
+}

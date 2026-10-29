@@ -112,4 +112,21 @@ export class Catalogo {
     this.busqueda = '';
     this.categoriaSeleccionada = 'Todos';
   }
+
+  favoritosIds: number[] = [];
+
+  esFavorito(id: number): boolean {
+    return this.favoritosIds.includes(id);
+  }
+
+  alternarFavorito(id: number): void {
+    if (this.esFavorito(id)) {
+      this.favoritosIds = this.favoritosIds.filter(
+        favoritoId => favoritoId !== id
+      );
+    } else {
+      this.favoritosIds = [...this.favoritosIds, id];
+    }
+  }
+  
 }

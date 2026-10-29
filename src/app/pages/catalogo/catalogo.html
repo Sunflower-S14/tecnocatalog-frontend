@@ -127,12 +127,23 @@
                 }
 
                 <button
-                  type="button"
-                  class="favorite-button"
-                  [attr.aria-label]="'Agregar ' + producto.nombre + ' a favoritos'"
-                  title="Agregar a favoritos"
+                type="button"
+                class="favorite-button"
+                [class.is-favorite]="esFavorito(producto.id)"
+                [attr.aria-pressed]="esFavorito(producto.id)"
+                [attr.aria-label]="esFavorito(producto.id)
+                    ? 'Quitar de favoritos'
+                    : 'Agregar a favoritos'"
+                [title]="esFavorito(producto.id)
+                    ? 'Quitar de favoritos'
+                    : 'Agregar a favoritos'"
+                (click)="alternarFavorito(producto.id)"
                 >
-                  <i class="bi bi-heart"></i>
+                <i
+                    class="bi"
+                    [class.bi-heart]="!esFavorito(producto.id)"
+                    [class.bi-heart-fill]="esFavorito(producto.id)"
+                ></i>
                 </button>
 
                 <img
