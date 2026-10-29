@@ -13,6 +13,12 @@
         @if (auth.esAdministrador()) {
           <a routerLink="/admin" class="header-link d-none d-md-inline"> Administración</a>
         }
+
+        <a routerLink="/admin/categorias" class="header-link d-none d-md-inline">
+          <i class="bi bi-tags"></i>
+          <span>Gestionar categorías</span>
+        </a>
+
         <a routerLink="/catalogo" class="header-link d-none d-md-inline">
           Catálogo
         </a>

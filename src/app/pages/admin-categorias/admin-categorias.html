@@ -1,0 +1,108 @@
+<header class="tc-header">
+  <div class="container-fluid px-3 px-lg-5">
+    <nav class="navbar navbar-expand-lg py-3">
+      <a routerLink="/catalogo" class="navbar-brand tc-brand">
+        <span class="brand-icon"><i class="bi bi-box-seam"></i></span>
+        <span>Tecno<span class="brand-highlight">Catalog</span></span>
+      </a>
+
+      <div class="d-flex align-items-center gap-3 ms-auto">
+        <a routerLink="/admin" class="header-link d-none d-md-inline">Productos</a>
+        <a routerLink="/admin/categorias" class="header-link active d-none d-md-inline" aria-current="page">Categorías</a>
+        <a routerLink="/catalogo" class="header-link d-none d-lg-inline">Ver catálogo</a>
+        <a routerLink="/favoritos" class="header-link d-none d-lg-inline">Mis favoritos</a>
+        <button type="button" (click)="cerrarSesion()" class="btn btn-tc-primary btn-sm px-3">
+          Cerrar sesión
+        </button>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<main class="admin-container">
+  <section class="admin-heading">
+    <span class="eyebrow">PANEL DE CONTROL</span>
+    <h1>Administración de categorías</h1>
+    <p>Organiza las categorías que clasifican el catálogo de TecnoCatalog.</p>
+  </section>
+
+  <div *ngIf="mensaje" class="notice success" role="status">{{ mensaje }}</div>
+  <div *ngIf="error" class="notice error" role="alert">{{ error }}</div>
+
+  <section class="admin-card">
+    <h2>
+      <i class="bi" [class.bi-pencil-square]="categoriaEditando !== null"
+        [class.bi-plus-circle]="categoriaEditando === null"></i>
+      {{ categoriaEditando !== null ? 'Editar categoría' : 'Registrar categoría' }}
+    </h2>
+
+    <form (ngSubmit)="guardarCategoria()" #formCategoria="ngForm">
+      <div class="form-grid">
+        <div class="field">
+          <label for="nombre">Nombre de la categoría</label>
+          <input id="nombre" name="nombre" type="text" [(ngModel)]="categoria.nombre"
+            maxlength="45" required placeholder="Ej. Electrónica" />
+          <small>{{ categoria.nombre.length }}/45 caracteres</small>
+        </div>
+
+        <div class="field">
+          <label for="descripcion">Descripción <span>(opcional)</span></label>
+          <textarea id="descripcion" name="descripcion" [(ngModel)]="categoria.descripcion"
+            maxlength="100" rows="3" placeholder="Describe brevemente esta categoría"></textarea>
+          <small>{{ categoria.descripcion.length }}/100 caracteres</small>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="primary-button"
+          [disabled]="formCategoria.invalid || guardando">
+          <i class="bi" [class.bi-check2-circle]="categoriaEditando !== null"
+            [class.bi-plus-circle]="categoriaEditando === null"></i>
+          {{ guardando ? 'Guardando...' : categoriaEditando !== null ? 'Guardar cambios' : 'Registrar categoría' }}
+        </button>
+        <button *ngIf="categoriaEditando !== null" type="button" class="secondary-button"
+          (click)="cancelarEdicion()" [disabled]="guardando">Cancelar edición</button>
+      </div>
+    </form>
+  </section>
+
+  <section class="admin-card inventory-card">
+    <div class="inventory-heading">
+      <div>
+        <h2>Categorías registradas</h2>
+        <p>{{ categorias.length }} categorías en el catálogo</p>
+      </div>
+      <button type="button" class="secondary-button" (click)="listarCategorias()" [disabled]="cargando">
+        <i class="bi bi-arrow-clockwise"></i> Actualizar
+      </button>
+    </div>
+
+    <p *ngIf="cargando" class="empty-message">Cargando categorías...</p>
+    <p *ngIf="!cargando && categorias.length === 0 && !error" class="empty-message">
+      No hay categorías registradas. Usa el formulario para crear la primera.
+    </p>
+
+    <div *ngIf="!cargando && categorias.length > 0" class="table-wrapper">
+      <table>
+        <thead>
+          <tr><th>ID</th><th>Categoría</th><th>Descripción</th><th>Acciones</th></tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of categorias">
+            <td>{{ item.idcategoria }}</td>
+            <td><strong>{{ item.nombre }}</strong></td>
+            <td><small class="description">{{ item.descripcion || 'Sin descripción' }}</small></td>
+            <td>
+              <div class="row-actions">
+                <button type="button" class="edit-button" (click)="editarCategoria(item)"
+                  aria-label="Editar categoría" title="Editar categoría"><i class="bi bi-pencil"></i></button>
+                <button type="button" class="delete-button" (click)="eliminarCategoria(item)"
+                  aria-label="Eliminar categoría" title="Eliminar categoría"><i class="bi bi-trash3"></i></button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>
