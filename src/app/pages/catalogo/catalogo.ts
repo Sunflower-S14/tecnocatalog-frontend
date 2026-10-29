@@ -2,6 +2,8 @@ import {  ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { Auth } from '../../services/auth';
 import { Productos, Producto } from '../../services/productos';
+import { Favoritos } from '../../services/favoritos';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-catalogo',
@@ -15,7 +17,8 @@ export class Catalogo implements OnInit {
     public auth: Auth,
     private router: Router,
     private productosService: Productos,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private favoritosService: Favoritos
   ) {}
 
   // Búsqueda
@@ -51,7 +54,8 @@ ngOnInit(): void {
       this.busqueda = '';
       this.categoriaSeleccionada = 'Todos';
       this.paginaActual = 1;
-
+      this.cargarFavoritos();
+      
       this.categorias = [
         { nombre: 'Todos', icono: 'bi-grid' },
         ...Array.from(
@@ -146,22 +150,89 @@ ngOnInit(): void {
     }
   }
 
-  // Favoritos (por ahora se mantienen en memoria)
-  favoritosIds: number[] = [];
+  // Favoritos 
 
-  esFavorito(id: number): boolean {
-    return this.favoritosIds.includes(id);
+favoritosIds: number[] = [];
+cargandoFavoritos = false;
+mensajeFavoritos = '';
+
+private cargarFavoritos(): void {
+  const usuario = this.auth.obtenerUsuario();
+
+  if (!usuario || !this.auth.estaAutenticado()) {
+    this.favoritosIds = [];
+    return;
   }
 
-  alternarFavorito(id: number): void {
-    if (this.esFavorito(id)) {
-      this.favoritosIds = this.favoritosIds.filter(
-        favoritoId => favoritoId !== id
-      );
-    } else {
-      this.favoritosIds = [...this.favoritosIds, id];
-    }
+  this.cargandoFavoritos = true;
+
+  this.favoritosService.obtenerFavoritos(usuario.usuarioId)
+    .pipe(
+      finalize(() => {
+        this.cargandoFavoritos = false;
+        this.cdr.detectChanges();
+      })
+    )
+    .subscribe({
+      next: (ids) => {
+        this.favoritosIds = ids;
+      },
+      error: (error) => {
+        console.error('Error al cargar favoritos:', error);
+        this.mensajeFavoritos =
+          'No fue posible cargar tus favoritos.';
+      }
+    });
+}
+
+esFavorito(id: number): boolean {
+  return this.favoritosIds.includes(id);
+}
+
+alternarFavorito(id: number): void {
+  if (!this.auth.estaAutenticado()) {
+    this.mensajeFavoritos =
+      'Inicia sesión para guardar tus productos favoritos.';
+    this.router.navigate(['/login']);
+    return;
   }
+
+  const usuario = this.auth.obtenerUsuario();
+
+  if (!usuario || this.cargandoFavoritos) {
+    return;
+  }
+
+  this.mensajeFavoritos = '';
+  this.cargandoFavoritos = true;
+
+  const operacion = this.esFavorito(id)
+    ? this.favoritosService.eliminarFavorito(usuario.usuarioId, id)
+    : this.favoritosService.agregarFavorito(usuario.usuarioId, id);
+
+  operacion
+    .pipe(
+      finalize(() => {
+        this.cargandoFavoritos = false;
+        this.cdr.detectChanges();
+      })
+    )
+    .subscribe({
+      next: () => {
+        this.favoritosIds = this.esFavorito(id)
+          ? this.favoritosIds.filter(favoritoId => favoritoId !== id)
+          : [...this.favoritosIds, id];
+
+        this.cdr.detectChanges();
+      },
+      error: (error) => {
+        console.error('Error al actualizar favorito:', error);
+        this.mensajeFavoritos =
+          'No fue posible actualizar el favorito. Intenta nuevamente.';
+      }
+    });
+}
+
 
   // Cerrar sesión
   cerrarSesion(): void {

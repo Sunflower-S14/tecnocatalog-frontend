@@ -35,7 +35,7 @@
             Cerrar sesión
           </button>
         } @else {
-          <a routerLink="/login">
+          <a routerLink="/login" class="btn btn-tc-primary btn-sm px-3">
             Iniciar sesión
           </a>
         }
@@ -110,6 +110,11 @@
           />
         </div>
 
+        @if (mensajeFavoritos) {
+            <div class="alert alert-info" role="status">
+              {{ mensajeFavoritos }}
+            </div>
+          }
         <div class="category-list mb-4">
           @for (categoria of categorias; track categoria.nombre) {
             <button
