@@ -1,0 +1,273 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background: #f7f9f8;
+  color: #0f2d3c;
+}
+
+.favorites-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 1rem 5%;
+  background: #fff;
+  border-bottom: 1px solid #e5ebea;
+}
+
+.brand {
+  color: #0f2d3c;
+  font-size: 1.25rem;
+  font-weight: 800;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.brand i {
+  color: #065748;
+  margin-right: 0.4rem;
+}
+
+.favorites-nav,
+.user-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.favorites-nav a {
+  color: #607078;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.favorites-nav a.active,
+.favorites-nav a:hover {
+  color: #065748;
+}
+
+.user-name {
+  font-weight: 600;
+}
+
+.logout-button,
+.remove-button {
+  border: 1px solid #c4ced2;
+  background: #fff;
+  color: #0f2d3c;
+  padding: 0.6rem 0.9rem;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.favorites-container {
+  width: min(1200px, 90%);
+  margin: 0 auto;
+  padding: 3.5rem 0;
+}
+
+.favorites-heading {
+  margin-bottom: 2.5rem;
+}
+
+.eyebrow {
+  color: #065748;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.favorites-heading h1 {
+  margin: 0.65rem 0;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
+}
+
+.favorites-heading h1 i {
+  color: #4ccaa5;
+  font-size: 0.75em;
+}
+
+.favorites-heading p,
+.product-info p {
+  color: #718087;
+}
+
+.favorites-count {
+  margin-bottom: 1.2rem;
+  color: #607078;
+  font-weight: 600;
+}
+
+.favorites-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+.product-card {
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid #e3eae8;
+  border-radius: 18px;
+  box-shadow: 0 5px 18px rgb(15 45 60 / 5%);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgb(15 45 60 / 9%);
+}
+
+.product-image {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 175px;
+  background: #edf4f1;
+  color: #065748;
+}
+
+.product-image > i {
+  font-size: 3.5rem;
+}
+
+.favorite-button {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  background: #fff;
+  color: #c83d58;
+  cursor: pointer;
+}
+
+.product-info {
+  padding: 1.25rem;
+}
+
+.product-category {
+  color: #08785f;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.product-info h2 {
+  margin: 0.5rem 0;
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+
+.product-info p {
+  min-height: 44px;
+  margin-bottom: 1rem;
+  font-size: 0.92rem;
+}
+
+.product-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  border-top: 1px solid #edf0ef;
+  padding-top: 1rem;
+}
+
+.stock {
+  color: #607078;
+  font-size: 0.85rem;
+}
+
+.remove-button {
+  border-color: #f0d6dc;
+  color: #b52f4a;
+}
+
+.remove-button:hover {
+  background: #fff1f3;
+}
+
+.favorites-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  padding: 4rem 1rem;
+  text-align: center;
+}
+
+.favorites-message > i {
+  color: #4ccaa5;
+  font-size: 3rem;
+}
+
+.favorites-message h2 {
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+
+.favorites-message p {
+  color: #718087;
+}
+
+.primary-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.8rem 1.2rem;
+  border: none;
+  border-radius: 10px;
+  background: #065748;
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.primary-button:hover {
+  background: #0f2d3c;
+  color: #fff;
+}
+
+@media (max-width: 900px) {
+  .favorites-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .favorites-header {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 600px) {
+  .favorites-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .favorites-header {
+    align-items: flex-start;
+  }
+
+  .favorites-nav {
+    order: 3;
+    width: 100%;
+  }
+
+  .user-actions {
+    gap: 0.5rem;
+  }
+
+  .user-name {
+    display: none;
+  }
+
+  .favorites-container {
+    padding-top: 2.5rem;
+  }
+}

@@ -1,0 +1,104 @@
+<header class="favorites-header">
+  <a routerLink="/catalogo" class="brand">
+    <i class="bi bi-grid-1x2-fill"></i>
+    TecnoCatalog
+  </a>
+
+  <nav class="favorites-nav">
+    <a routerLink="/catalogo">Catálogo</a>
+    <a routerLink="/favoritos" class="active">Mis favoritos</a>
+  </nav>
+
+    <a href="#" class="header-icon" aria-label="Mi cuenta">
+        <i class="bi bi-person-circle"></i>
+    </a>
+  <div class="user-actions">
+    @if (auth.obtenerUsuario(); as usuario) {
+      <span class="user-name">{{ usuario.nombre }}</span>
+    }
+
+    <button type="button" class="btn btn-tc-primary btn-sm px-3" (click)="cerrarSesion()" >
+      <i class="bi bi-box-arrow-right"></i>
+      Cerrar sesión
+    </button>
+  </div>
+</header>
+
+<main class="favorites-container">
+  <section class="favorites-heading">
+    <span class="eyebrow">TU COLECCIÓN PERSONAL</span>
+    <h1>Mis favoritos <i class="bi bi-heart-fill"></i></h1>
+    <p>Encuentra aquí los productos que guardaste para después.</p>
+  </section>
+
+  @if (cargando) {
+    <div class="favorites-message">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
+      <p>Cargando tus favoritos...</p>
+    </div>
+  } @else if (error) {
+    <div class="favorites-message">
+      <i class="bi bi-exclamation-circle"></i>
+      <p>{{ error }}</p>
+      <button type="button" class="primary-button" (click)="cargarFavoritos()">
+        Intentar nuevamente
+      </button>
+    </div>
+  } @else if (productos.length === 0) {
+    <div class="favorites-message empty-state">
+      <i class="bi bi-heart"></i>
+      <h2>Aún no tienes favoritos</h2>
+      <p>Explora el catálogo y guarda los productos que te interesen.</p>
+      <a routerLink="/catalogo" class="primary-button">
+        Explorar catálogo
+      </a>
+    </div>
+  } @else {
+    <div class="favorites-count">
+      {{ productos.length }}
+      {{ productos.length === 1 ? 'producto guardado' : 'productos guardados' }}
+    </div>
+
+    <section class="favorites-grid">
+      @for (producto of productos; track producto.id) {
+        <article class="product-card">
+          <div class="product-image">
+            <i class="bi bi-box-seam"></i>
+
+            <button
+              type="button"
+              class="favorite-button"
+              (click)="quitarFavorito(producto.id)"
+              [attr.aria-label]="'Quitar ' + producto.nombre + ' de favoritos'"
+            >
+              <i class="bi bi-heart-fill"></i>
+            </button>
+          </div>
+
+          <div class="product-info">
+            <span class="product-category">{{ producto.categoria }}</span>
+            <h2>{{ producto.nombre }}</h2>
+            <p>{{ producto.descripcion }}</p>
+
+            <div class="product-footer">
+              <span class="stock">
+                <i class="bi bi-box-seam"></i>
+                Stock {{ producto.stock }}
+              </span>
+
+              <button
+                type="button"
+                class="remove-button"
+                (click)="quitarFavorito(producto.id)"
+              >
+                Quitar
+              </button>
+            </div>
+          </div>
+        </article>
+      }
+    </section>
+  }
+</main>
