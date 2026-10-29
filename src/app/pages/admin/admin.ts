@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { finalize } from 'rxjs';
 import { Auth } from '../../services/auth';
+import { Categoria, CategoriasService } from '../../services/categorias';
 import {
   Productos,
   Producto,
@@ -17,6 +18,7 @@ import {
 })
 export class Admin implements OnInit {
   productos: Producto[] = [];
+  categorias: Categoria[] = [];
 
   cargando = false;
   guardando = false;
@@ -35,6 +37,7 @@ export class Admin implements OnInit {
   constructor(
     public auth: Auth,
     private productosService: Productos,
+    private categoriasService: CategoriasService,
     private router: Router,
     private cdr: ChangeDetectorRef
   ) {}
@@ -47,9 +50,23 @@ export class Admin implements OnInit {
       return;
     }
 
+    this.cargarCategorias();
     this.cargarProductos();
   }
 
+  cargarCategorias(): void {
+    this.categoriasService.obtenerCategorias().subscribe({
+      next: (categorias) => {
+        this.categorias = categorias;
+        this.cdr.detectChanges();
+      },
+      error: (error) => {
+        console.error('Error al cargar categorías:', error);
+        this.error = 'No fue posible cargar las categorías.';
+        this.cdr.detectChanges();
+      }
+    });
+  }
   cargarProductos(): void {
     this.cargando = true;
     this.error = '';

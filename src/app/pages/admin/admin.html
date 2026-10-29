@@ -1,19 +1,40 @@
 
-<header class="admin-header">
-  <a routerLink="/catalogo" class="brand">
-    <i class="bi bi-grid-1x2-fill"></i>
-    TecnoCatalog
-  </a>
+<header class="tc-header">
+  <div class="container-fluid px-3 px-lg-5">
+    <nav class="navbar navbar-expand-lg py-3">
+      <a routerLink="/catalogo" class="navbar-brand tc-brand">
+        <span class="brand-icon">
+          <i class="bi bi-box-seam"></i>
+        </span>
+        <span>Tecno<span class="brand-highlight">Catalog</span></span>
+      </a>
 
-  <nav>
-    <a routerLink="/catalogo">Ver catálogo</a>
-    <a routerLink="/favoritos">Mis favoritos</a>
-  </nav>
+      <div class="d-flex align-items-center gap-3 ms-auto">
+        @if (auth.esAdministrador()) {
+          <a routerLink="/admin" class="header-link d-none d-md-inline active"> Administración</a>
+        }
+        <a routerLink="/catalogo" class="header-link d-none d-md-inline">
+          Ver catálogo
+        </a>
 
-  <button type="button" class="logout-button" (click)="cerrarSesion()">
-    <i class="bi bi-box-arrow-right"></i>
-    Cerrar sesión
-  </button>
+        <a routerLink="/favoritos" class="header-link d-none d-md-inline">
+          Mis favoritos
+        </a>
+
+        <a routerLink="/favoritos" class="header-icon" aria-label="Favoritos">
+          <i class="bi bi-heart"></i>
+        </a>
+
+        <a href="#" class="header-icon" aria-label="Mi cuenta">
+          <i class="bi bi-person-circle"></i>
+        </a>
+
+        <button type="button" (click)="cerrarSesion()" class="btn btn-tc-primary btn-sm px-3">
+          Cerrar sesión
+        </button>
+      </div>
+    </nav>
+  </div>
 </header>
 
 <main class="admin-container">
@@ -53,20 +74,30 @@
           />
         </div>
 
-        <div class="field">
-          <label for="categoriaId">ID de categoría</label>
-          <input
-            id="categoriaId"
-            name="categoriaId"
-            type="number"
-            [(ngModel)]="formulario.categoriaId"
-            required
-            min="1"
-            step="1"
-            placeholder="Ej. 6"
-          />
-          <small>Ingresa el ID de una categoría existente.</small>
-        </div>
+        
+      <div class="field">
+        <label for="categoriaId">Categoría</label>
+        <select
+          id="categoriaId"
+          class="form-select"
+          name="categoriaId"
+          [(ngModel)]="formulario.categoriaId"
+          required
+        >
+          <option [ngValue]="0" disabled>
+            Selecciona una categoría
+          </option>
+
+          @for (categoria of categorias; track categoria.idcategoria) {
+            <option [ngValue]="categoria.idcategoria">
+              {{ categoria.nombre }}
+            </option>
+          }
+        </select>
+
+        <small>Selecciona la categoría a la que pertenece el producto.</small>
+      </div>
+
 
         <div class="field full-width">
           <label for="descripcion">Descripción</label>
