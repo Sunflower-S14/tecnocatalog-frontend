@@ -1,0 +1,139 @@
+<main class="login-page">
+  <section class="login-visual">
+    <a routerLink="/catalogo" class="brand">
+      <span class="brand-icon">
+        <i class="bi bi-cpu"></i>
+      </span>
+      <span>TecnoCatalog</span>
+    </a>
+
+    <div class="visual-content">
+      <span class="eyebrow">TECNOLOGÍA PARA TI</span>
+
+      <h1>
+        Tu próximo favorito
+        <span>está aquí.</span>
+      </h1>
+
+      <p>
+        Explora nuestra selección de productos tecnológicos
+        y guarda los que más te gustan en un solo lugar.
+      </p>
+
+      <div class="visual-decoration">
+        <i class="bi bi-laptop"></i>
+        <i class="bi bi-headphones"></i>
+        <i class="bi bi-mouse"></i>
+      </div>
+    </div>
+
+    <p class="visual-footer">
+      Descubre. Elige. Disfruta.
+    </p>
+  </section>
+
+  <section class="login-form-section">
+    <a routerLink="/catalogo" class="back-link">
+      <i class="bi bi-arrow-left"></i>
+      Volver al catálogo
+    </a>
+
+    <div class="login-card">
+      <div class="mobile-brand">
+        <i class="bi bi-cpu"></i>
+        TecnoCatalog
+      </div>
+
+      <span class="form-eyebrow">BIENVENIDO DE NUEVO</span>
+      <h2>Inicia sesión</h2>
+
+      <p class="form-description">
+        Ingresa a tu cuenta para continuar.
+      </p>
+
+      <form (ngSubmit)="iniciarSesion()" #loginForm="ngForm">
+        <div class="form-field">
+          <label for="email">Correo electrónico</label>
+
+          <div class="input-wrapper">
+            <i class="bi bi-envelope"></i>
+
+            <input
+              id="email"
+              name="email"
+              type="email"
+              placeholder="nombre@correo.com"
+              [(ngModel)]="email"
+              autocomplete="username"
+              required
+              email
+            />
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label for="password">Contraseña</label>
+
+          <div class="input-wrapper">
+            <i class="bi bi-lock"></i>
+
+            <input
+              id="password"
+              name="password"
+              [type]="mostrarPassword ? 'text' : 'password'"
+              placeholder="Ingresa tu contraseña"
+              [(ngModel)]="password"
+              autocomplete="current-password"
+              required
+            />
+
+            <button
+              type="button"
+              class="password-toggle"
+              (click)="mostrarPassword = !mostrarPassword"
+              [attr.aria-label]="mostrarPassword
+                ? 'Ocultar contraseña'
+                : 'Mostrar contraseña'"
+            >
+              <i
+                class="bi"
+                [class.bi-eye]="!mostrarPassword"
+                [class.bi-eye-slash]="mostrarPassword"
+              ></i>
+            </button>
+          </div>
+        </div>
+
+        @if (error) {
+          <div class="login-error" role="alert">
+            <i class="bi bi-exclamation-circle"></i>
+            {{ error }}
+          </div>
+        }
+
+        <button
+          type="submit"
+          class="login-button"
+          [disabled]="cargando || loginForm.invalid"
+        >
+          @if (cargando) {
+            <span class="spinner-border spinner-border-sm"></span>
+            Iniciando sesión...
+          } @else {
+            Iniciar sesión
+            <i class="bi bi-arrow-right"></i>
+          }
+        </button>
+      </form>
+
+      <p class="register-prompt">
+        ¿Aún no tienes una cuenta?
+        <a routerLink="/registro">Crear cuenta</a>
+      </p>
+    </div>
+
+    <p class="login-legal">
+      © 2026 TecnoCatalog. Todos los derechos reservados.
+    </p>
+  </section>
+</main>
