@@ -1,59 +1,133 @@
-# Tecnocatalog
+# TecnoCatalog Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.2.5.
+Interfaz web de **TecnoCatalog**, desarrollada con Angular. Permite consultar el catálogo de productos, iniciar sesión, registrar usuarios, gestionar productos y categorías desde el panel administrativo y administrar una lista de productos favoritos.
 
-## Development server
+## Tecnologías utilizadas
 
-To start a local development server, run:
+- Angular
+- TypeScript
+- HTML5 y CSS3
+- Bootstrap Icons
+- Angular Router
+- Angular HttpClient
+- Autenticación mediante JWT
+- Server-Side Rendering (SSR) e hidratación de Angular
 
-```bash
-ng serve
-```
+## Requisitos del sistema
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Antes de ejecutar el proyecto, instala lo siguiente:
 
-## Code scaffolding
+- **Node.js:** versión compatible con la versión de Angular utilizada por el proyecto.
+- **npm:** administrador de paquetes de Node.js.
+- **Angular CLI:** herramienta de desarrollo de Angular, opcional si utilizas los scripts de npm.
+- **Backend de TecnoCatalog:** debe estar configurado y ejecutándose para utilizar las funcionalidades que requieren acceso a la API.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
+Comprueba las versiones instaladas con los comandos:
 
 ```bash
-ng build
+node -v
+npm -v
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+Para consultar la versión de Angular del proyecto, ejecuta desde su directorio:
 
 ```bash
-ng test
+npx ng version
 ```
 
-## Running end-to-end tests
+## Instalación
 
-For end-to-end (e2e) testing, run:
+### 1. Obtener el proyecto
+
+Clona el repositorio o abre la carpeta del frontend en tu editor de código.
+
+### 2. Instalar las dependencias
+
+Desde la raíz del proyecto, ejecuta:
 
 ```bash
-ng e2e
+npm install
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Este comando instala las dependencias declaradas en `package.json`.
 
-## Additional Resources
+### 3. Configurar la conexión con el backend
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Verifica la URL base que utilizan los servicios de Angular para comunicarse con la API.
+
+Para el entorno local, el backend está disponible por defecto en:
+
+`http://localhost:8080`
+
+Si la URL está definida en un archivo de configuración o directamente en los servicios, comprueba que corresponda a la dirección donde se ejecuta el backend.
+
+## Ejecución en entorno local
+
+### 1. Iniciar el backend
+
+Primero, ejecuta el backend de TecnoCatalog y verifica que pueda conectarse correctamente a MySQL.
+
+### 2. Iniciar el frontend
+
+En otra terminal, desde la raíz del frontend, ejecuta:
+
+```bash
+npm start
+```
+
+Si el proyecto no define el script `start`, utiliza:
+
+```bash
+npx ng serve
+```
+
+### 3. Acceder a la aplicación
+
+Abre el navegador y visita:
+
+`http://localhost:4200`
+
+La aplicación estará disponible mientras el servidor de desarrollo permanezca en ejecución.
+
+## Funcionalidades principales
+
+- **Catálogo de productos:** consulta de los productos disponibles.
+- **Autenticación:** inicio de sesión y registro de usuarios.
+- **Favoritos:** consulta y administración de productos favoritos para usuarios autenticados.
+- **Panel administrativo:** acceso a las funciones de administración según el rol del usuario.
+- **Gestión de productos:** consulta, creación, edición y eliminación de productos.
+- **Gestión de categorías:** consulta, creación, edición y eliminación de categorías.
+- **Perfil de usuario:** consulta de la información de la cuenta.
+
+## Estructura general del proyecto
+
+El frontend organiza sus responsabilidades mediante componentes, servicios, guards e interceptores.
+
+```text
+src/
+└── app/
+    ├── guards/          # Control de acceso a las rutas
+    ├── interceptors/    # Interceptores de solicitudes HTTP
+    ├── pages/           # Páginas y vistas de la aplicación
+    ├── services/        # Comunicación con el backend y autenticación
+    ├── app.config.ts    # Configuración de la aplicación
+    ├── app.routes.ts    # Definición de rutas
+    └── app.ts           # Componente principal, según la estructura del proyecto
+```
+
+La estructura anterior es orientativa. Los nombres y archivos definitivos deben coincidir con los que contiene el repositorio.
+
+## Seguridad y comunicación con la API
+
+- El token JWT obtenido durante el inicio de sesión se utiliza para autenticar las solicitudes que requieren autorización.
+- El interceptor HTTP agrega el token a las solicitudes correspondientes.
+- Los guards controlan el acceso a las rutas de acuerdo con el estado de autenticación y el rol del usuario.
+- Los permisos definitivos deben ser validados también por el backend.
+- El backend debe permitir las solicitudes de origen `http://localhost:4200` mediante su configuración CORS.
+
+## Consideraciones adicionales
+
+- El frontend y el backend deben ejecutarse simultáneamente para utilizar las funcionalidades que consultan o modifican datos.
+- Si el backend utiliza otro puerto o dirección, actualiza la configuración de la API.
+- Si existen errores de conexión, verifica que el backend esté activo y que la URL de la API sea correcta.
+- No incluyas tokens ni credenciales personales en el repositorio.
