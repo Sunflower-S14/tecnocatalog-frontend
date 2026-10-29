@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { CurrencyPipe } from '@angular/common';
-
 
 interface Producto {
   id: number;
@@ -15,7 +13,7 @@ interface Producto {
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, CurrencyPipe],
+  imports: [RouterOutlet],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
