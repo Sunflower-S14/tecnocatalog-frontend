@@ -4,10 +4,11 @@ import { Auth } from '../../services/auth';
 import { Productos, Producto } from '../../services/productos';
 import { Favoritos } from '../../services/favoritos';
 import { finalize } from 'rxjs';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-catalogo',
-  imports: [RouterLink],
+  imports: [CommonModule, RouterLink],
   templateUrl: './catalogo.html',
   styleUrl: './catalogo.css'
 })

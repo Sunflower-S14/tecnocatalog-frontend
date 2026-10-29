@@ -1,0 +1,87 @@
+
+<div class="perfil-page">
+  <header class="perfil-header">
+    <a routerLink="/catalogo" class="perfil-brand">
+      <i class="bi bi-laptop"></i>
+      <span>TecnoCatalog</span>
+    </a>
+
+    <nav class="perfil-nav">
+      <a routerLink="/catalogo">Catálogo</a>
+      <a routerLink="/favoritos">Favoritos</a>
+      <button type="button" class="btn-cerrar" (click)="cerrarSesion()">
+        <i class="bi bi-box-arrow-right"></i>
+        Cerrar sesión
+      </button>
+    </nav>
+  </header>
+
+  <main class="perfil-main">
+    <div class="perfil-intro">
+      <span class="perfil-etiqueta">MI CUENTA</span>
+      <h1>Mi perfil</h1>
+      <p>Consulta la información personal de tu cuenta.</p>
+    </div>
+
+    <section class="perfil-card" *ngIf="usuario as u">
+      <div class="perfil-card-header">
+        <div class="perfil-avatar">
+          <i class="bi bi-person-fill"></i>
+        </div>
+
+        <div>
+          <h2>{{ u.nombre }}</h2>
+          <p>Información de tu cuenta</p>
+        </div>
+      </div>
+
+      <div class="perfil-datos">
+        <div class="perfil-dato">
+          <span class="dato-icono">
+            <i class="bi bi-person"></i>
+          </span>
+          <div>
+            <label>Nombre completo</label>
+            <p>{{ u.nombre }}</p>
+          </div>
+        </div>
+
+        <div class="perfil-dato">
+          <span class="dato-icono">
+            <i class="bi bi-envelope"></i>
+          </span>
+          <div>
+            <label>Correo electrónico</label>
+            <p>{{ u.email }}</p>
+          </div>
+        </div>
+
+        <div class="perfil-dato">
+          <span class="dato-icono">
+            <i class="bi bi-shield-check"></i>
+          </span>
+          <div>
+            <label>Tipo de cuenta</label>
+            <p>{{ u.rolId === 1 ? 'Administrador' : 'Usuario' }}</p>
+          </div>
+        </div>
+
+        <div class="perfil-dato">
+          <span class="dato-icono">
+            <i class="bi bi-hash"></i>
+          </span>
+          <div>
+            <label>Identificador de usuario</label>
+            <p>{{ u.usuarioId }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="perfil-nota">
+        <i class="bi bi-info-circle"></i>
+        Esta sección es únicamente de consulta. Tus datos personales
+        no pueden modificarse desde aquí.
+      </div>
+    </section>
+  </main>
+</div>

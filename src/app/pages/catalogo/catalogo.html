@@ -13,27 +13,24 @@
 
         <div class="d-flex align-items-center gap-3 ms-auto">
           @if (auth.esAdministrador()) {
-          <a routerLink="/admin" class="header-link d-none d-md-inline" >Administración</a>
+          <a routerLink="/admin" class="header-link d-none d-md-inline" >Productos</a>
         }
-
+      @if (auth.esAdministrador()) {
           <a routerLink="/admin/categorias" class="header-link d-none d-md-inline">
             <i class="bi bi-tags"></i>
-            <span>Gestionar categorías</span>
+            <span>Categorías</span>
         </a>
+      }
 
           <a href="#" class="header-link d-none d-md-inline">
             Catálogo
-          </a>
-
-          <a href="#" class="header-link d-none d-md-inline">
-            Novedades
           </a>
 
           <a href="/favoritos" class="header-icon" aria-label="Favoritos">
             <i class="bi bi-heart"></i>
           </a>
 
-          <a href="#" class="header-icon" aria-label="Mi cuenta">
+          <a href="/perfil" class="header-icon" aria-label="Mi cuenta">
             <i class="bi bi-person-circle"></i>
           </a>
 
