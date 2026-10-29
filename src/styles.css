@@ -1,1 +1,69 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --tc-primary: #0f2d3c;
+  --tc-gray: #c4ced2;
+  --tc-green-dark: #065748;
+  --tc-mint: #4ccaa5;
+  --tc-mint-light: #69d7b9;
+
+  --tc-background: #f5f8f8;
+  --tc-white: #ffffff;
+  --tc-text: #0f2d3c;
+  --tc-border: #e1e8e9;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--tc-background);
+  color: var(--tc-text);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+.btn-tc-primary {
+  background-color: var(--tc-mint);
+  border: 1px solid var(--tc-mint);
+  color: var(--tc-primary);
+  font-weight: 700;
+  border-radius: 10px;
+  padding: 0.7rem 1.25rem;
+  transition: background-color 0.2s ease;
+}
+
+.btn-tc-primary:hover {
+  background-color: var(--tc-mint-light);
+  border-color: var(--tc-mint-light);
+  color: var(--tc-primary);
+}
+
+.card-tc {
+  background-color: var(--tc-white);
+  border: 1px solid var(--tc-border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+a {
+  color: var(--tc-green-dark);
+}
+
+:focus-visible {
+  outline: 3px solid var(--tc-mint-light);
+  outline-offset: 3px;
+}
