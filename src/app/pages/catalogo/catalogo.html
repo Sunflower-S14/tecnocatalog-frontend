@@ -126,40 +126,30 @@
         </div>
 
         <div class="product-grid">
-          @for (producto of productosFiltrados; track producto.id) {
+        @for (producto of productosPaginados; track producto.id) {
             <article class="product-card">
 
               <div class="product-image">
-                @if (producto.nuevo) {
-                  <span class="new-label">Nuevo</span>
-                }
-
                 <button
-                type="button"
-                class="favorite-button"
-                [class.is-favorite]="esFavorito(producto.id)"
-                [attr.aria-pressed]="esFavorito(producto.id)"
-                [attr.aria-label]="esFavorito(producto.id)
-                    ? 'Quitar de favoritos'
-                    : 'Agregar a favoritos'"
-                [title]="esFavorito(producto.id)
-                    ? 'Quitar de favoritos'
-                    : 'Agregar a favoritos'"
-                (click)="alternarFavorito(producto.id)"
+                  type="button"
+                  class="favorite-button"
+                  [class.is-favorite]="esFavorito(producto.id)"
+                  [attr.aria-pressed]="esFavorito(producto.id)"
+                  (click)="alternarFavorito(producto.id)"
+                  aria-label="Alternar favorito"
                 >
-                <i
+                  <i
                     class="bi"
                     [class.bi-heart]="!esFavorito(producto.id)"
                     [class.bi-heart-fill]="esFavorito(producto.id)"
-                ></i>
+                  ></i>
                 </button>
 
-                <img
-                  [src]="producto.imagen"
-                  [alt]="producto.nombre"
-                  loading="lazy"
-                />
+                <div class="product-placeholder">
+                  <i class="bi bi-box-seam"></i>
+                </div>
               </div>
+
 
               <div class="product-info">
                 <span class="product-category">{{ producto.categoria }}</span>
@@ -167,8 +157,8 @@
                 <p>{{ producto.descripcion }}</p>
 
                 <div class="product-footer">
-                  <span class="product-price">
-                    {{ producto.precio | currency:'MXN':'symbol':'1.2-2':'es-MX' }}
+                  <span class="product-price"> Stock
+                    {{ producto.stock }}
                   </span>
 
                   <button
@@ -183,21 +173,71 @@
               </div>
 
             </article>
-          } @empty {
-            <div class="empty-results">
-              <i class="bi bi-search"></i>
-              <h3>No encontramos productos</h3>
-              <p>Prueba con otra búsqueda o selecciona una categoría diferente.</p>
+            } @empty {
+              @if (cargandoProductos) {
+                <div class="empty-results">
+                  <i class="bi bi-arrow-repeat"></i>
+                  <h3>Cargando productos...</h3>
+                  <p>Estamos obteniendo los productos del catálogo.</p>
+                </div>
+              } @else if (errorProductos) {
+                <div class="empty-results">
+                  <i class="bi bi-exclamation-circle"></i>
+                  <h3>No fue posible cargar el catálogo</h3>
+                  <p>{{ errorProductos }}</p>
+                </div>
+              } @else {
+                <div class="empty-results">
+                  <i class="bi bi-search"></i>
+                  <h3>No encontramos productos</h3>
+                  <p>Prueba con otra búsqueda o selecciona una categoría diferente.</p>
+                  <button
+                    type="button"
+                    class="btn btn-tc-primary"
+                    (click)="limpiarFiltros()"
+                  >
+                    Ver todos los productos
+                  </button>
+                </div>
+              }
+            }
+        </div>
+        
+        @if (totalPaginas > 1) {
+          <nav class="catalog-pagination" aria-label="Paginación de productos">
+            <button
+              type="button"
+              class="pagination-button"
+              [disabled]="paginaActual === 1"
+              (click)="cambiarPagina(paginaActual - 1)"
+              aria-label="Página anterior"
+            >
+              <i class="bi bi-chevron-left"></i>
+            </button>
+
+            @for (pagina of paginas; track pagina) {
               <button
                 type="button"
-                class="btn btn-tc-primary"
-                (click)="busqueda = ''; seleccionarCategoria('Todos')"
+                class="pagination-button"
+                [class.active]="paginaActual === pagina"
+                [attr.aria-current]="paginaActual === pagina ? 'page' : null"
+                (click)="cambiarPagina(pagina)"
               >
-                Ver todos los productos
+                {{ pagina }}
               </button>
-            </div>
-          }
-        </div>
+            }
+
+            <button
+              type="button"
+              class="pagination-button"
+              [disabled]="paginaActual === totalPaginas"
+              (click)="cambiarPagina(paginaActual + 1)"
+              aria-label="Página siguiente"
+            >
+              <i class="bi bi-chevron-right"></i>
+            </button>
+          </nav>
+        }
 
       </div>
     </section>

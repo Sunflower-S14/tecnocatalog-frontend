@@ -613,3 +613,71 @@
     transition: none;
   }
 }
+
+
+/* Paginación del catálogo */
+.catalog-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  margin: 2.5rem auto 1rem;
+  padding: 0;
+  flex-wrap: wrap;
+}
+
+.pagination-button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 42px;
+  height: 42px;
+  padding: 0 0.8rem;
+  border: 1px solid #c4ced2;
+  border-radius: 12px;
+  background: #fff;
+  color: #0f2d3c;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.pagination-button:hover:not(:disabled) {
+  background: #eaf7f2;
+  border-color: #4ccaa5;
+  transform: translateY(-2px);
+}
+
+.pagination-button.active {
+  background: #065748;
+  border-color: #065748;
+  color: #fff;
+  box-shadow: 0 4px 10px rgb(6 87 72 / 18%);
+}
+
+.pagination-button:disabled {
+  background: #f2f4f5;
+  color: #9aa6ab;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+@media (max-width: 480px) {
+  .catalog-pagination {
+    gap: 0.35rem;
+    margin-top: 1.75rem;
+  }
+
+  .pagination-button {
+    min-width: 36px;
+    height: 38px;
+    padding: 0 0.6rem;
+    border-radius: 9px;
+  }
+}
