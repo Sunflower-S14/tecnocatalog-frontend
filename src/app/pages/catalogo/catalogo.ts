@@ -1,6 +1,8 @@
 import { CurrencyPipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { Auth } from '../../services/auth';
+import { Router } from '@angular/router';
 
 interface Producto {
   id: number;
@@ -19,6 +21,12 @@ interface Producto {
   styleUrl: './catalogo.css'
 })
 export class Catalogo {
+
+  constructor(
+    public auth: Auth,
+    private router: Router
+  ) {}
+
   busqueda = '';
 
   categorias = [
@@ -129,4 +137,8 @@ export class Catalogo {
     }
   }
   
+    cerrarSesion(): void {
+    this.auth.cerrarSesion();
+    this.router.navigate(['/catalogo']);
+  }
 }

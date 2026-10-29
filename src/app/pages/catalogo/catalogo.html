@@ -28,9 +28,17 @@
             <i class="bi bi-person-circle"></i>
           </a>
 
-          <a href="/login" class="btn btn-tc-primary btn-sm px-3">
+        @if (auth.estaAutenticado()) {
+          <span>Hola, {{ auth.obtenerUsuario()?.nombre }}</span>
+
+          <button type="button" (click)="cerrarSesion()" class="btn btn-tc-primary btn-sm px-3">
+            Cerrar sesión
+          </button>
+        } @else {
+          <a routerLink="/login">
             Iniciar sesión
           </a>
+        }
         </div>
 
       </nav>
