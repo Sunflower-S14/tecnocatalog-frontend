@@ -1,0 +1,194 @@
+
+<header class="admin-header">
+  <a routerLink="/catalogo" class="brand">
+    <i class="bi bi-grid-1x2-fill"></i>
+    TecnoCatalog
+  </a>
+
+  <nav>
+    <a routerLink="/catalogo">Ver catálogo</a>
+    <a routerLink="/favoritos">Mis favoritos</a>
+  </nav>
+
+  <button type="button" class="logout-button" (click)="cerrarSesion()">
+    <i class="bi bi-box-arrow-right"></i>
+    Cerrar sesión
+  </button>
+</header>
+
+<main class="admin-container">
+  <section class="admin-heading">
+    <span class="eyebrow">PANEL DE CONTROL</span>
+    <h1>Administración de productos</h1>
+    <p>Gestiona el catálogo y las existencias de TecnoCatalog.</p>
+  </section>
+
+  @if (mensaje) {
+    <div class="notice success" role="status">{{ mensaje }}</div>
+  }
+
+  @if (error) {
+    <div class="notice error" role="alert">{{ error }}</div>
+  }
+
+  <section class="admin-card">
+    <h2>
+      <i class="bi" [class.bi-pencil-square]="modoEdicion"
+        [class.bi-plus-circle]="!modoEdicion"></i>
+      {{ modoEdicion ? 'Editar producto' : 'Registrar producto' }}
+    </h2>
+
+    <form (ngSubmit)="guardarProducto()" #productoForm="ngForm">
+      <div class="form-grid">
+        <div class="field">
+          <label for="nombre">Nombre del producto</label>
+          <input
+            id="nombre"
+            name="nombre"
+            type="text"
+            [(ngModel)]="formulario.nombre"
+            required
+            maxlength="150"
+            placeholder="Ej. Teclado mecánico"
+          />
+        </div>
+
+        <div class="field">
+          <label for="categoriaId">ID de categoría</label>
+          <input
+            id="categoriaId"
+            name="categoriaId"
+            type="number"
+            [(ngModel)]="formulario.categoriaId"
+            required
+            min="1"
+            step="1"
+            placeholder="Ej. 6"
+          />
+          <small>Ingresa el ID de una categoría existente.</small>
+        </div>
+
+        <div class="field full-width">
+          <label for="descripcion">Descripción</label>
+          <textarea
+            id="descripcion"
+            name="descripcion"
+            [(ngModel)]="formulario.descripcion"
+            required
+            maxlength="500"
+            rows="3"
+            placeholder="Describe las características del producto"
+          ></textarea>
+        </div>
+
+        <div class="field">
+          <label for="stock">Existencias</label>
+          <input
+            id="stock"
+            name="stock"
+            type="number"
+            [(ngModel)]="formulario.stock"
+            required
+            min="0"
+            step="1"
+          />
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button
+          type="submit"
+          class="primary-button"
+          [disabled]="productoForm.invalid || guardando"
+        >
+          <i class="bi bi-check2-circle"></i>
+          {{ guardando ? 'Guardando...' : modoEdicion ? 'Guardar cambios' : 'Registrar producto' }}
+        </button>
+
+        @if (modoEdicion) {
+          <button
+            type="button"
+            class="secondary-button"
+            (click)="limpiarFormulario()"
+            [disabled]="guardando"
+          >
+            Cancelar edición
+          </button>
+        }
+      </div>
+    </form>
+  </section>
+
+  <section class="admin-card inventory-card">
+    <div class="inventory-heading">
+      <div>
+        <h2>Productos registrados</h2>
+        <p>{{ productos.length }} productos en el catálogo</p>
+      </div>
+
+      <button
+        type="button"
+        class="secondary-button"
+        (click)="cargarProductos()"
+        [disabled]="cargando"
+      >
+        <i class="bi bi-arrow-clockwise"></i>
+        Actualizar
+      </button>
+    </div>
+
+    @if (cargando) {
+      <p class="empty-message">Cargando productos...</p>
+    } @else if (productos.length === 0) {
+      <p class="empty-message">No hay productos registrados.</p>
+    } @else {
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Producto</th>
+              <th>Categoría</th>
+              <th>Stock</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (producto of productos; track producto.id) {
+              <tr>
+                <td>{{ producto.id }}</td>
+                <td>
+                  <strong>{{ producto.nombre }}</strong>
+                  <small class="description">{{ producto.descripcion }}</small>
+                </td>
+                <td>{{ producto.categoria }}</td>
+                <td>{{ producto.stock }}</td>
+                <td>
+                  <div class="row-actions">
+                    <button
+                      type="button"
+                      class="edit-button"
+                      (click)="editarProducto(producto)"
+                      aria-label="Editar producto"
+                    >
+                      <i class="bi bi-pencil"></i>
+                    </button>
+
+                    <button
+                      type="button"
+                      class="delete-button"
+                      (click)="eliminarProducto(producto)"
+                      aria-label="Eliminar producto"
+                    >
+                      <i class="bi bi-trash3"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </section>
+</main>

@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { adminGuard } from './guards/admin.guard';
 
 export const routes: Routes = [
   {
@@ -15,6 +16,12 @@ export const routes: Routes = [
     path: 'login',
     loadComponent: () =>
       import('./pages/login/login').then(m => m.Login)
+  },
+{
+    path: 'admin',
+    canActivate: [adminGuard],
+    loadComponent: () =>
+      import('./pages/admin/admin').then(m => m.Admin)
   },
     {
     path: 'favoritos',

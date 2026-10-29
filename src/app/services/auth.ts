@@ -66,4 +66,13 @@ export class Auth {
   estaAutenticado(): boolean {
     return this.obtenerToken() !== null;
   }
+
+    esAdministrador(): boolean {
+    return this.obtenerUsuario()?.rolId === 1;
+  }
+
+  esUsuario(): boolean {
+    return this.obtenerUsuario()?.rolId === 2;
+  }
+
 }
